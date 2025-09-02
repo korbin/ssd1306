@@ -113,6 +113,11 @@ where
         self.mode.max_y = height - 1;
     }
 
+    /// Return the underlying framebuffer.
+    pub fn buffer(&self) -> &SIZE::Buffer {
+        &self.mode.buffer
+    }
+
     /// Clear the underlying framebuffer. You need to call `disp.flush()` for any effect on the screen.
     pub fn clear_buffer(&mut self) {
         self.clear_impl(false);
