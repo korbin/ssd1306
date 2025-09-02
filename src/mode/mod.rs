@@ -8,8 +8,11 @@ pub use buffered_graphics::*;
 use display_interface::{DisplayError, WriteOnlyDataCommand};
 pub use terminal::*;
 
+#[cfg(feature = "async")]
+use super::{AsyncWriteOnlyDataCommand, DisplaySizeAsync, Ssd1306Async};
+
 /// Common functions to all display modes.
-#[maybe_async_cfg::maybe(sync(keep_self,), async(feature = "async"))]
+#[maybe_async_cfg2::maybe(sync(keep_self,), async(feature = "async"))]
 pub trait DisplayConfig {
     /// Error.
     type Error;
@@ -25,20 +28,31 @@ pub trait DisplayConfig {
 #[derive(Debug, Copy, Clone)]
 pub struct BasicMode;
 
+#[maybe_async_cfg2::maybe(
+    sync(keep_self),
+    async(
+        feature = "async",
+        idents(
+            WriteOnlyDataCommand(sync, async = "AsyncWriteOnlyDataCommand"),
+            Command(sync, async = "CommandAsync"),
+            DisplaySize(sync, async = "DisplaySizeAsync")
+        )
+    )
+)]
 impl<DI, SIZE> Ssd1306<DI, SIZE, BasicMode>
 where
     DI: WriteOnlyDataCommand,
     SIZE: DisplaySize,
 {
     /// Clear the display.
-    pub fn clear(&mut self) -> Result<(), DisplayError> {
+    pub async fn clear(&mut self) -> Result<(), DisplayError> {
         let old_addr_mode = self.addr_mode;
         if old_addr_mode != AddrMode::Horizontal {
-            self.set_addr_mode(AddrMode::Horizontal)?;
+            self.set_addr_mode(AddrMode::Horizontal).await?;
         }
 
         let dim = self.dimensions();
-        self.set_draw_area((0, 0), dim)?;
+        self.set_draw_area((0, 0), dim).await?;
 
         let num_pixels = dim.0 as u16 * dim.1 as u16;
 
@@ -50,11 +64,11 @@ where
         let num_batches = num_pixels / PIXELS_PER_BATCH + 1;
 
         for _ in 0..num_batches {
-            self.draw(&[0; BYTES_PER_BATCH as usize])?;
+            self.draw(&[0; BYTES_PER_BATCH as usize]).await?;
         }
 
         if old_addr_mode != AddrMode::Horizontal {
-            self.set_addr_mode(old_addr_mode)?;
+            self.set_addr_mode(old_addr_mode).await?;
         }
 
         Ok(())

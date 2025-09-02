@@ -8,7 +8,7 @@ use core::{cmp::min, fmt};
 use display_interface::AsyncWriteOnlyDataCommand;
 use display_interface::{DisplayError, WriteOnlyDataCommand};
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -25,7 +25,7 @@ pub trait TerminalDisplaySize: DisplaySize {
     const CHAR_NUM: u8;
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -37,7 +37,7 @@ impl TerminalDisplaySize for DisplaySize128x64 {
     const CHAR_NUM: u8 = 128;
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -49,7 +49,7 @@ impl TerminalDisplaySize for DisplaySize128x32 {
     const CHAR_NUM: u8 = 64;
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -61,7 +61,7 @@ impl TerminalDisplaySize for DisplaySize96x16 {
     const CHAR_NUM: u8 = 24;
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         keep_self,
@@ -73,7 +73,7 @@ impl TerminalDisplaySize for DisplaySize72x40 {
     const CHAR_NUM: u8 = 45;
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -175,7 +175,7 @@ impl From<DisplayError> for TerminalModeError {
 }
 
 /// Terminal mode.
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(feature = "async", idents(TerminalMode(async = "TerminalModeAsync")))
 )]
@@ -184,7 +184,7 @@ pub struct TerminalMode {
     cursor: Option<Cursor>,
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(feature = "async", idents(TerminalMode(async = "TerminalModeAsync")))
 )]
@@ -195,7 +195,7 @@ impl TerminalMode {
     }
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -233,7 +233,7 @@ where
     }
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",

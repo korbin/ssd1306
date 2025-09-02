@@ -18,7 +18,7 @@ use display_interface::{DisplayError, WriteOnlyDataCommand};
 /// buffer is drawn to by [`set_pixel`](Ssd1306::set_pixel) commands or
 /// [`embedded-graphics`](https://docs.rs/embedded-graphics) commands. The display can then be
 /// updated using the [`flush`](Ssd1306::flush) method.
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(feature = "async", idents(DisplaySize(async = "DisplaySizeAsync")))
 )]
@@ -34,7 +34,7 @@ where
     max_y: u8,
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(feature = "async", idents(DisplaySize(async = "DisplaySizeAsync")))
 )]
@@ -54,7 +54,7 @@ where
     }
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -87,7 +87,7 @@ where
     }
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -245,7 +245,7 @@ use super::DisplayConfig;
 use super::DisplayConfigAsync;
 
 #[cfg(feature = "graphics")]
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -334,7 +334,7 @@ where
 }
 
 #[cfg(feature = "graphics")]
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self,),
     async(
         feature = "async",
