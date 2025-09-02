@@ -7,7 +7,7 @@ use display_interface::AsyncWriteOnlyDataCommand;
 use display_interface::{DataFormat::U8, DisplayError, WriteOnlyDataCommand};
 
 /// SSD1306 Commands
-#[maybe_async_cfg::maybe(sync(keep_self), async(feature = "async"))]
+#[maybe_async_cfg2::maybe(sync(keep_self), async(feature = "async"))]
 #[derive(Debug, Copy, Clone)]
 pub enum Command {
     /// Set contrast. Higher number is higher contrast. Default = 0x7F
@@ -90,7 +90,7 @@ pub enum Command {
     InternalIref(bool, bool),
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",

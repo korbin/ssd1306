@@ -126,8 +126,8 @@ pub use crate::i2c_interface::I2CDisplayInterface;
 use crate::mode::BasicMode;
 use brightness::Brightness;
 #[cfg(feature = "async")]
-use command::CommandAsync;
-use command::{AddrMode, Command, VcomhLevel};
+pub(crate) use command::CommandAsync;
+pub(crate) use command::{AddrMode, Command, VcomhLevel};
 #[cfg(feature = "async")]
 use display_interface::AsyncWriteOnlyDataCommand;
 use display_interface::{DataFormat::U8, DisplayError, WriteOnlyDataCommand};
@@ -146,7 +146,7 @@ use size::DisplaySizeAsync;
 /// SSD1306 driver.
 ///
 /// Note that some methods are only available when the display is configured in a certain [`mode`].
-#[maybe_async_cfg::maybe(sync(keep_self), async(feature = "async"))]
+#[maybe_async_cfg2::maybe(sync(keep_self), async(feature = "async"))]
 #[derive(Copy, Clone, Debug)]
 pub struct Ssd1306<DI, SIZE, MODE> {
     interface: DI,
@@ -156,7 +156,7 @@ pub struct Ssd1306<DI, SIZE, MODE> {
     rotation: DisplayRotation,
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self,),
     async(feature = "async", idents(DisplaySize(async = "DisplaySizeAsync")))
 )]
@@ -178,7 +178,7 @@ where
     }
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self,),
     async(
         feature = "async",
@@ -220,7 +220,7 @@ where
     }
 }
 
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
@@ -520,7 +520,7 @@ where
 }
 
 // SPI-only reset
-#[maybe_async_cfg::maybe(
+#[maybe_async_cfg2::maybe(
     sync(keep_self),
     async(
         feature = "async",
